@@ -1,6 +1,12 @@
 #[macro_use]
 extern crate rocket;
 
+mod controller;
+mod routes;
+
+use controller::controller::Controller;
+use controller::todo::TodoController;
+
 #[get("/")]
 fn index() -> &'static str {
     // Todo Server ReadMe.
@@ -12,19 +18,17 @@ fn load_todo(index: i32) -> String {
     return format!("Hello {}", index);
 }
 
-#[get("/api/todoList")]
-fn load_todo_list() {}
-
-#[put("/api/todo")]
+#[post("/api/todo")]
 fn update_todo() {}
 
 #[delete("/api/todo")]
 fn remove_todo() {}
 
-
-
-
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index, load_todo])
+    let c = TodoController::new();
+
+    rocket::build()
+        .mount("/", routes![index, load_todo])
+        .mount(c.base(), routes![controller::todo::load_todo])
 }
