@@ -1,12 +1,11 @@
-use std::sync::Mutex;
-use crate::models::todo::Todo;
+use crate::service::database;
 
 pub struct AppState {
-    pub todo_list: Mutex<Vec<Todo>>,
+    pub database: database::Database,
 }
 
 impl AppState {
     pub fn new() -> Self {
-        AppState { todo_list: Mutex::new(Vec::new()) }
+        AppState { database: database::Database::new() }
     }
 }

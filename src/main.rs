@@ -2,8 +2,11 @@
 extern crate rocket;
 
 mod routers;
-mod models;
 mod handlers;
+mod models;
+mod service;
+
+
 
 #[launch]
 fn rocket() -> _ {
