@@ -3,6 +3,7 @@ use serde_json;
 
 #[derive(Debug,Clone,Serialize,Deserialize)]
 pub struct Todo {
+    pub user_id: u32,
     #[serde(default = "default_id")]
     pub id: u32,
     pub title: String,
@@ -18,9 +19,9 @@ fn default_id() -> u32 {
 }
 
 impl Todo {
-    pub fn new(title: String) -> Self {
+    pub fn new(user_id: u32, title: String) -> Self {
         let id = default_id();
-        Todo { id, title, completed: false }
+        Todo { user_id, id, title, completed: false }
     }
 
     pub fn to_vec(&self) -> Vec<u8> {
