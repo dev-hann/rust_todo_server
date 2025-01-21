@@ -5,16 +5,48 @@ pub struct Database {
 
 impl Database {
     pub fn new() -> Self {
-        let instance = sled::open("todo.db").unwrap();
+        let instance = match sled::open("todo.db") {
+            Ok(instance) => instance,
+            Err(e) => panic!("Failed to open database: {:?}", e),
+        };
         Database { instance }
     }
 
+    pub fn get_todo(&self, id: u32) -> Option<Todo> {
+        match self.instance.get(&id.to_string()) {
+            Ok(Some(todo)) => Some(Todo::from(todo.to_vec())),
+            _ => None,
+        }
+    }
+
     pub fn get_all_todos(&self) -> Vec<Todo> {
-        let todos = self.instance.get("todos").unwrap();
-        todos.iter().map(|todo| todo.to_vec()).collect()
+        let todos = self.instance.iter().filter_map(|res| {
+            match res {
+                Ok((k, v)) => Some(Todo::from(v.to_vec())),
+                Err(_) => None,
+            }
+        }).collect::<Vec<Todo>>();
+        todos
     }
 
     pub fn add_todo(&self, todo: Todo) {
-        self.instance.insert(todo.id.to_string(), todo.to_vec());
+        match self.instance.insert(todo.id.to_string(), todo.to_vec()) {
+            Ok(_) => println!("Todo added successfully"),
+            Err(e) => println!("Failed to add todo: {:?}", e),
+        }
+    }
+
+    pub fn delete_todo(&self, id: u32) {
+        match self.instance.remove(&id.to_string()) {
+            Ok(_) => println!("Todo deleted successfully"),
+            Err(e) => println!("Failed to delete todo: {:?}", e),
+        }
+    }
+
+    pub fn update_todo(&self, todo: Todo) {
+        match self.instance.insert(todo.id.to_string(), todo.to_vec()) {
+            Ok(_) => println!("Todo updated successfully"),
+            Err(e) => println!("Failed to update todo: {:?}", e),
+        }
     }
 }

@@ -1040,6 +1040,7 @@ version = "0.1.0"
 dependencies = [
  "rocket",
  "serde",
+ "serde_json",
  "sled",
 ]
 
