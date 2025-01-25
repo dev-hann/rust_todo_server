@@ -24,17 +24,30 @@ cargo run
 ## Usage
 The API endpoints are available under the `/api` path. Here are the available endpoints:
 
+### Todo Related Endpoints
 - `GET /api/todos` - Retrieve all Todo items.
 - `GET /api/todos/<id>` - Retrieve a specific Todo item by ID.
 - `POST /api/todos` - Create a new Todo item. (Requires Todo data in JSON format)
 - `PATCH /api/todos/<id>` - Update a specific Todo item by ID. (Requires Todo data in JSON format)
 - `DELETE /api/todos/<id>` - Delete a specific Todo item by ID.
 
+### Authentication Related Endpoints
+- `POST /api/auth/login` - Log in a user. (Requires user data in JSON format)
+- `POST /api/auth/register` - Register a new user. (Requires user data in JSON format)
+- `GET /api/auth/users` - Retrieve all user information.
+- `GET /api/auth/users/<id>` - Retrieve specific user information by ID.
+
 ### Example
 Here's an example of creating a Todo item:
 
 ```bash
 curl -X POST http://localhost:8000/api/todos -H "Content-Type: application/json" -d '{"title": "New Todo Item"}'
+```
+
+Here's an example of logging in a user:
+
+```bash
+curl -X POST http://localhost:8000/api/auth/login -H "Content-Type: application/json" -d '{"username": "your_username", "password": "your_password"}'
 ```
 
 ## Contributing
