@@ -5,7 +5,9 @@ mod routers;
 mod handlers;
 mod models;
 mod service;
-use models::claims::AuthToken;
+mod consts;
+
+use handlers::auth::AuthToken;
 
 
 #[launch]
